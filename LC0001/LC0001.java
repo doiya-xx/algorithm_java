@@ -1,3 +1,5 @@
+package LC0001;
+
 import java.util.HashMap;
 
 /*

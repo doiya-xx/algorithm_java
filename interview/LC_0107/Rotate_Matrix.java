@@ -1,9 +1,9 @@
-package interview;
+package interview.LC_0107;
 
 /*
 LeetCode 48
  */
-class solution {
+class Solution {
     public void rotate(int[][] matrix) {
         int n = matrix.length;
         printMatrix(matrix);
@@ -33,9 +33,9 @@ class solution {
 
 
 
-public class LC_0107_Rotate_Matrix {
+public class Rotate_Matrix {
     public static void main(String[] args) {
-        solution solu = new solution();
+        Solution solu = new Solution();
         // 测试三维数组
         // int[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
         // solu.rotate(matrix);
