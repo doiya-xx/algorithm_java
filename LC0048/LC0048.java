@@ -1,8 +1,10 @@
-package LC0048;/*
-Leetcode 0048 旋转矩阵
- */
+package LC0048;
+public class LC0048 {
 
-class Solution {
+    /*
+    Leetcode 0048 旋转矩阵
+     */
+
     public void rotate(int[][] matrix) {
         int n = matrix.length;
         for (int i = 0; i < n / 2; i++) {
@@ -15,10 +17,9 @@ class Solution {
             }
         }
     }
-}
-public class LC0048 {
+
     public static void main(String[] args) {
-        Solution solu = new Solution();
+        LC0048 solu = new LC0048();
         // 测试三维数组
         // int[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
         // solu.rotate(matrix);
