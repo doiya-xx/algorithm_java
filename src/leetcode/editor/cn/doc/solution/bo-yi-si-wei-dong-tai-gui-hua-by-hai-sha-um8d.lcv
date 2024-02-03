@@ -1,0 +1,47 @@
+> Problem: [1690. 石子游戏 VII](https://leetcode.cn/problems/stone-game-vii/description/)
+
+[TOC]
+
+# 思路
+
+> 很有意思的一道题，因为每一步取的值都会比前一步小，所以不难发现先手A最后取得的和一定更大，但题目要求的是最值化差值，因为不管是谁取，每次取掉的石子后面都不会再出现，所以最后的差值就是B取的所有石子值之和，所以B要最小化自己取的和，A要最大化B取的和，即A要最小化自己取的和，所以两个人的策略都是最小化自己取的石子之和，那么区间dp即可，每次从取左或者取右转移。
+
+# 解题方法
+
+> 动态规划+前缀和
+
+# 复杂度
+
+时间复杂度:
+
+> $O(n^2)$
+
+空间复杂度:
+
+> $O(n^2)$
+
+# Code
+
+* []
+
+```C++
+class Solution {
+    int p[1010],q[1010];
+    int f[1010][1010];
+public:
+    int stoneGameVII(vector<int>& a) {
+        int n=a.size();
+        for(int i=1;i<=n;i++) p[i]=a[i-1],q[i]=q[i-1]+p[i];
+        for(int i=1;i<=n;i++) f[i][i]=p[i];
+        for(int i=n;i>=1;i--) {
+            for(int j=i+1;j<=n;j++) {
+                int x=q[j]-q[i];
+                int y=q[j-1]-q[i-1];
+                f[i][j]=min(p[i]+x-f[i+1][j],p[j]+y-f[i][j-1]);
+            }
+        }
+        return q[n]-f[1][n];
+    }
+};
+```
+

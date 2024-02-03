@@ -1,0 +1,33 @@
+[TOC]
+
+# 解题方法
+
+这道题挺简单的，大家都知道用**位运算**。我就用的**位运算**。
+
+# 复杂度
+
+懒得写了~~大家都知道**位运算不麻烦**~
+
+# Code
+
+* []
+
+```C++
+
+class Solution {
+public:
+    int bitwiseComplement(int n) {
+        if(n == 0) return 1;
+	    int temp1 = 1;
+    	int temp2 = n;
+	    while(temp2 > 0) {
+		    n^= temp1;
+    		temp1 = temp1 << 1;
+	    	temp2 = temp2 >> 1;
+    	}
+	    return n;
+    }
+};
+```
+
+我的第2篇题解，关照一下~

@@ -1,0 +1,29 @@
+哦我的老天，看这整齐干净的代码
+
+效率也很高，使用了掩码+异或运算
+
+# Code
+
+* []
+
+```Python
+class Solution:
+    def bitwiseComplement(self, n: int) -> int:
+        copy = n
+        mask = 2
+        while copy > 1:
+            mask <<= 1
+            copy >>= 1
+        return n ^ mask - 1
+```
+
+* []
+
+```Python
+class Solution:
+    def bitwiseComplement(self, n: int) -> int:
+        # max的效率其实很低
+        mask = max(1 << n.bit_length(), 2)
+        return n ^ mask - 1
+```
+

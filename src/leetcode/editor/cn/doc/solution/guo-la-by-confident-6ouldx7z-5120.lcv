@@ -1,0 +1,53 @@
+> Problem: [1690. 石子游戏 VII](https://leetcode.cn/problems/stone-game-vii/description/)
+
+[TOC]
+
+# 思路
+
+> 讲述看到这一题的思路
+
+# 解题方法
+
+> 描述你的解题方法
+
+# 复杂度
+
+时间复杂度:
+
+> 添加时间复杂度, 示例： $O(n)$
+
+空间复杂度:
+
+> 添加空间复杂度, 示例： $O(n)$
+
+# Code
+
+* []
+
+```Java
+class Solution {
+    public int stoneGameVII(int[] stones) {
+        int[] nums = stones;
+        int n = nums.length;
+        // dp[i][j] 表示数组 nums[i] ~ nums[j] 的最优解的差值为 dp[i][j]
+        int[][] dp = new int[n][n];
+
+        int[] sum = new int[n + 1];
+        for (int i = 0; i < n; i++) sum[i + 1] = sum[i] + nums[i];
+        // System.out.println(Arrays.toString(sum));
+
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                dp[i][j] = Math.max(
+                        sum[j + 1] - sum[i + 1] - dp[i + 1][j],
+                        sum[j] - sum[i] - dp[i][j - 1]);
+            }
+        }
+
+        // for(int[] v : dp) System.out.println(Arrays.toString(v));
+
+        return dp[0][n - 1];
+    }
+}
+```
+
