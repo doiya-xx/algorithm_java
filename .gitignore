@@ -23,5 +23,16 @@
 hs_err_pid*
 replay_pid*
 
+# IDEA .idea
+.idea/
+
 # Java Output
 out/
+
+src/leetcode/editor/cn/doc/note
+src/leetcode/editor/cn/doc/solution
+test
+.idea/algorithm_java.iml
+.idea/leetcode/editor.xml
+.idea/leetcode/statistics.xml
+.idea/leetcode
