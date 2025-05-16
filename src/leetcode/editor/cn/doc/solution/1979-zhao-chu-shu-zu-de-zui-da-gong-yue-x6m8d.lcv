@@ -1,0 +1,60 @@
+# 解法
+
+## 思路和算法
+
+首先遍历数组 $\textit{nums}$ 得到最小元素 $\textit{minNum}$ 和最大元素 $\textit{maxNum}$，然后计算 $\textit{minNum}$ 和 $\textit{maxNum}$ 的最大公约数。
+
+计算最大公约数的方法是辗转相除法，其原理是：对于正整数 $a$ 和非负整数 $b$，当 $b = 0$ 时 $\gcd(a, b) = a$，当 $b > 0$ 时 $\gcd(a, b) = \gcd(b, a \bmod b)$。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public int findGCD(int[] nums) {
+        int minNum = Integer.MAX_VALUE, maxNum = Integer.MIN_VALUE;
+        for (int num : nums) {
+            minNum = Math.min(minNum, num);
+            maxNum = Math.max(maxNum, num);
+        }
+        return gcd(minNum, maxNum);
+    }
+
+    public int gcd(int num1, int num2) {
+        while (num2 != 0) {
+            int temp = num1;
+            num1 = num2;
+            num2 = temp % num2;
+        }
+        return num1;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public int FindGCD(int[] nums) {
+        int minNum = nums.Min(), maxNum = nums.Max();
+        return GCD(minNum, maxNum);
+    }
+
+    public int GCD(int num1, int num2) {
+        while (num2 != 0) {
+            int temp = num1;
+            num1 = num2;
+            num2 = temp % num2;
+        }
+        return num1;
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n + \log m)$，其中 $n$ 是数组 $\textit{nums}$ 的长度，$m$ 是数组 $\textit{nums}$ 的最大元素。遍历数组得到最小元素与最大元素的时间是 $O(n)$，计算最大公约数的时间是 $O(\log m)$，因此时间复杂度是 $O(n + \log m)$。
+
+- 空间复杂度：$O(1)$。
+

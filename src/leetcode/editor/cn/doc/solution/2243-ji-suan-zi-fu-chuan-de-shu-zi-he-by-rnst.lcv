@@ -1,0 +1,72 @@
+# 解法
+
+## 思路和算法
+
+可以模拟操作更新字符串 $s$，直到字符串 $s$ 的长度小于等于 $k$。
+
+每一轮操作中，遍历字符串 $s$ 并按 $k$ 个字符一组计算每组的数字和，拼接到新字符串的末尾，最后一组的字符个数可能少于 $k$。遍历结束之后，将 $s$ 的值更新为新字符串。
+
+当 $s$ 的长度小于等于 $k$ 时，返回 $s$。
+
+## 代码
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public String digitSum(String s, int k) {
+        while (s.length() > k) {
+            s = oneRound(s, k);
+        }
+        return s;
+    }
+
+    public String oneRound(String s, int k) {
+        StringBuffer sb = new StringBuffer();
+        int length = s.length();
+        for (int i = 0; i < length; i += k) {
+            int start = i, end = Math.min(start + k - 1, length - 1);
+            int sum = 0;
+            for (int j = start; j <= end; j++) {
+                sum += s.charAt(j) - '0';
+            }
+            sb.append(sum);
+        }
+        return sb.toString();
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public string DigitSum(string s, int k) {
+        while (s.Length > k) {
+            s = OneRound(s, k);
+        }
+        return s;
+    }
+
+    public string OneRound(string s, int k) {
+        StringBuilder sb = new StringBuilder();
+        int length = s.Length;
+        for (int i = 0; i < length; i += k) {
+            int start = i, end = Math.Min(start + k - 1, length - 1);
+            int sum = 0;
+            for (int j = start; j <= end; j++) {
+                sum += s[j] - '0';
+            }
+            sb.Append(sum);
+        }
+        return sb.ToString();
+    }
+}
+```
+
+## 复杂度分析
+
+- 时间复杂度：$O(n)$，其中 $n$ 是字符串 $s$ 的长度。长度为 $n$ 的字符串经过一轮操作之后的长度变成 $\Big\lceil \dfrac{n}{k} \Big\rceil$，因此总操作次数是 $n$ 的常数倍，时间复杂度是 $O(n)$。
+
+- 空间复杂度：$O(n)$，其中 $n$ 是字符串 $s$ 的长度。模拟操作的空间是 $O(n)$。
+

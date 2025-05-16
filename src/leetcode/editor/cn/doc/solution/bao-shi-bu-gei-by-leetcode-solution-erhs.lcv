@@ -1,0 +1,161 @@
+#### 方法一：模拟
+
+**思路**
+
+按照题目描述，首先遍历 $\textit{operations}$，计算出赠予的宝石数量，然后直接在 $\textit{gem}$ 数组上对两位勇者的宝石数增减相应的宝石数量。然后遍历 $\textit{gem}$ 数组，计算出宝石数量最大值和最小值，计算差值后返回。
+
+**代码**
+
+* [sol1-Python3]
+
+```Python
+class Solution:
+    def giveGem(self, gem: List[int], operations: List[List[int]]) -> int:
+        for x, y in operations:
+            number = gem[x] // 2
+            gem[x] -= number
+            gem[y] += number
+        mn, mx = gem[0], gem[0]
+        for number in gem:
+            mn = min(number, mn)
+            mx = max(number, mx)
+        return mx - mn
+```
+
+* [sol1-Java]
+
+```Java
+class Solution {
+    public int giveGem(int[] gem, int[][] operations) {
+        for (int[] operation : operations) {
+            int x = operation[0], y = operation[1];
+            int number = gem[x] / 2;
+            gem[x] -= number;
+            gem[y] += number;
+        }
+        int mn = gem[0], mx = gem[0];
+        for (int number : gem) {
+            mn = Math.min(number, mn);
+            mx = Math.max(number, mx);
+        }
+        return mx - mn;
+    }
+}
+```
+
+* [sol1-C#]
+
+```C#
+public class Solution {
+    public int GiveGem(int[] gem, int[][] operations) {
+        foreach (int[] operation in operations) {
+            int x = operation[0], y = operation[1];
+            int number = gem[x] / 2;
+            gem[x] -= number;
+            gem[y] += number;
+        }
+        int mn = gem[0], mx = gem[0];
+        foreach (int number in gem) {
+            mn = Math.Min(number, mn);
+            mx = Math.Max(number, mx);
+        }
+        return mx - mn;
+    }
+}
+```
+
+* [sol1-C++]
+
+```C++
+class Solution {
+public:
+    int giveGem(vector<int>& gem, vector<vector<int>>& operations) {
+        for (auto &operation : operations) {
+            int x = operation[0], y = operation[1];
+            int number = gem[x] / 2;
+            gem[x] -= number;
+            gem[y] += number;
+        }
+        int mn = *min_element(gem.begin(), gem.end());
+        int mx = *max_element(gem.begin(), gem.end());
+        return mx - mn;
+    }
+};
+```
+
+* [sol1-C]
+
+```C
+int giveGem(int* gem, int gemSize, int** operations, int operationsSize, int* operationsColSize) {
+    for (int i = 0; i < operationsSize; i++) {
+        int x = operations[i][0], y = operations[i][1];
+        int number = gem[x] / 2;
+        gem[x] -= number;
+        gem[y] += number;
+    }
+    int mn = gem[0], mx = gem[0];
+    for (int i = 0; i < gemSize; i++) {
+        int number = gem[i];
+        mn = fmin(number, mn);
+        mx = fmax(number, mx);
+    }
+    return mx - mn;
+}
+```
+
+* [sol1-Go]
+
+```Go
+func giveGem(gem []int, operations [][]int) int {
+    for _, operation := range operations {
+        x, y := operation[0], operation[1]
+        number := gem[x] / 2
+        gem[x] -= number
+        gem[y] += number
+    }
+    mn, mx := gem[0], gem[0];
+    for _, number := range gem {
+        mn = min(number, mn)
+        mx = max(number, mx)
+    }
+    return mx - mn
+}
+
+func max(x int, y int) int {
+    if x < y {
+        return y
+    }
+    return x
+}
+
+func min(x int, y int) int {
+    if x > y {
+        return y
+    }
+    return x
+}
+```
+
+* [sol1-JavaScript]
+
+```JavaScript
+var giveGem = function(gem, operations) {
+    for (const operation of operations) {
+        const x = operation[0];
+        const y = operation[1];
+        const number = Math.floor(gem[x] / 2);
+        gem[x] -= number;
+        gem[y] += number;
+    }
+    const mn = Math.min(...gem);
+    const mx = Math.max(...gem);
+    return mx - mn;
+};
+```
+
+**复杂度分析**
+
+- 时间复杂度：$O(m+n)$，其中 $m$ 是数组 $\textit{operations}$ 的长度，$n$ 是数组 $\textit{gem}$ 的长度。我们需要遍历两个数组各一次。
+
+- 空间复杂度：$O(1)$，我们仅使用常数空间。
+

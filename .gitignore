@@ -28,11 +28,9 @@ replay_pid*
 
 # Java Output
 out/
+target/
 
-src/leetcode/editor/cn/doc/note
-src/leetcode/editor/cn/doc/solution
-test
-.idea/algorithm_java.iml
-.idea/leetcode/editor.xml
-.idea/leetcode/statistics.xml
-.idea/leetcode
+# Maven Wrapper
+.mvn/
+# Gradle Wrapper
+.gradle/

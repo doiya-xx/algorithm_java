@@ -1,0 +1,123 @@
+> Problem: [6. Z 字形变换](https://leetcode.cn/problems/zigzag-conversion/description/)
+
+[TOC]
+
+# 思路
+
+遍历字符串, 将每个字符定位到需要新构建的字符串的索引处
+
+# 解题方法
+
+    计算每行的范围
+    循环 c =  len/ ((n - 2)*2 + 2)
+    余数 r = len mod ((n - 2)*2 + 2)
+    baseLen = c
+    r == 0 , 首尾行长 = baseLen, 中间行 = baseLen * 2
+    0 < r <= n, 从前往后给每行加1, 一直给到r行
+    r > n, 首尾行长 = baseLen + 1,中间行 = baseLen * 2 + 1, 然后 r - n 依次给中间行从后往前分配
+
+# 复杂度
+
+时间复杂度:
+$O(n)$
+
+空间复杂度:
+$O(n)$
+
+# Code
+
+* []
+
+```Java
+class Solution {
+  
+
+    /**
+     * 计算每行的范围
+     * 循环 c =  len/ ((n - 2)*2 + 2)
+     * 余数 r = len mod ((n - 2)*2 + 2)
+     * baseLen = len / c
+     * r == 0 , 首尾行长 = baseLen, 中间行 = baseLen * 2
+     * 0 < r <= n, 从前往后给每行加1, 一直给到r行
+     * r > n, 首尾行长 = baseLen + 1,中间行 = baseLen * 2 + 1, 然后 r - n 依次给中间行从后往前分配
+     */
+    public String convert(String s, int numRows) {
+        final int n = numRows;
+        final int len = s.length();
+
+        if (n == 1 || n >= len) {
+            return s;
+        }
+
+        final int c = len / ((n - 2) * 2 + 2);
+        final int rm = len % ((n - 2) * 2 + 2);
+        // 构建行长数组
+        int[] nArr = new int[n];
+        // 默认 rm == 0
+        nArr[0] = c;
+        nArr[n - 1] = c;
+        if (n > 2) {
+            Arrays.fill(nArr, 1, n - 1, c * 2);
+        }
+        if (rm > 0) {
+            for (int i = 0; i < Math.min(n, rm); i++) {
+                nArr[i]++;
+            }
+        }
+
+        if (rm > n) {
+            for (int i = n - 2; i > n - 2 - (rm - n); i--) {
+                nArr[i]++;
+            }
+
+        }
+
+        int[] idxArr = new int[n];
+
+        for (int i = 1; i < n; i++) {
+            idxArr[i] = idxArr[i - 1] + nArr[i - 1];
+        }
+
+        // 构建结果
+        char[] cArr = new char[len];
+        for (int i = 0; i < len; i++) {
+            char cc = s.charAt(i);
+            // 第几次循环
+            final int sc = (i + 1) / ((n - 2) * 2 + 2);
+            // 余数
+            final int srm = (i + 1) % ((n - 2) * 2 + 2);
+
+            if (srm == 0) {
+                // 在第二行
+                final int index;
+                if (n == 2) {
+                    index = idxArr[1] - 1 + sc;
+                }else{
+                    index = idxArr[1] - 1 + sc * 2;
+                }
+                cArr[index] = cc;
+
+            } else if (srm == 1 || srm == n) {
+                // 在哪一行
+               final int index = idxArr[srm - 1] - 1 + sc + 1;
+                cArr[index] = cc;
+            } else if (srm < n) {
+                final int index = idxArr[srm - 1] - 1 + sc * 2 + 1;
+                cArr[index] = cc;
+            } else {
+                // srm > n
+                final int rowN = n - 1 - (srm - n);
+                final int index = idxArr[rowN] - 1 + sc * 2 + 2;
+                cArr[index] = cc;
+            }
+
+        }
+
+        return new String(cArr);
+    }
+
+
+
+}
+```
+

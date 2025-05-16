@@ -1,0 +1,146 @@
+> Problem: [https://leetcode.cn/problems/recover-binary-search-tree/description/](https://leetcode.cn/problems/recover-binary-search-tree/description/ "https://leetcode.cn/problems/recover-binary-search-tree/description/")
+
+\[TOC]
+
+# 思路
+
+> 讲述看到这一题的思路
+
+# 解题方法
+
+> 描述你的解题方法
+
+morris 中序遍历 算法：
+
+1. 如果无左子树，那么访问右子树。（root = root->right）
+
+2. 如果有左子树，那么找到左子树最右的结点。我们记该结点为prev,前驱结点。
+
+3. 经过2后，第一次，左子书最右的结点也即prev的右子树必为null。我们令其右子树指向root.也即前驱结点prev的右子数为root。然后root下沉层数，指向他的左子书。
+
+4. 重复1，2。如果前驱结点最右的结点的右子树prev->right为null，走3,否则走5.
+
+5. 前驱结点右子树不为null，说明前驱prev（当前root节点的右子树）已经访问完毕，我们要恢复之前制定的关系。
+
+6. 重复以上过程，直到root为空！
+
+* 
+
+```
+        TreeNode  *predecessor = nullptr;
+        while(root!=nullptr)
+        {
+            //左子树为空，访问右字数
+            if(root->left == nullptr)
+            {
+                //访问root节点
+                root = root->right;//向右迭代
+            }
+            else//左子树不为空，访问左字数的最右结点
+            {
+                predecessor = root->left;
+                while(predecessor->right!=nullptr &&predecessor->right!=root)//predecessor->right!=root 是为了规避循环引用的情况（特殊情况）
+                {
+                    predecessor = predecessor->right;//访问左字数的最右结点
+                }
+
+                if(predecessor->right == nullptr)//加链
+                {
+                    predecessor->right = root;
+                    root = root->left;
+                }
+                else
+//这里的else必走的是predecessor—》right==root
+                {
+                    //访问root节点
+                    predecessor->right = nullptr;//恢复之前的关系
+                    root = root->right;
+                }
+            }
+        }
+ 
+```
+
+# 复杂度
+
+时间复杂度:
+
+> 添加时间复杂度, 示例： $O(n)$
+
+空间复杂度:
+
+> 添加空间复杂度, 示例： $O(n)$
+
+# Code
+
+* C++
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode *x = nullptr, *y = nullptr, *pred = nullptr, *predecessor = nullptr;
+        while(root!=nullptr)
+        {
+            //左子树为空，访问右字数
+            if(root->left == nullptr)
+            {
+                if(pred !=nullptr && root->val < pred->val)//根节点小雨前驱结点，不和逻辑
+                {
+                    y = root;
+                    if(x ==nullptr)
+                    {
+                        x = pred;
+                    }
+                }
+
+                pred = root;
+                root = root->right;//向右迭代
+            }
+            else//左子树不为空，访问左字数的最右结点
+            {
+                predecessor = root->left;
+                while(predecessor->right!=nullptr &&predecessor->right!=root)//predecessor->right!=root 是为了规避循环引用的情况（特殊情况）
+                {
+                    predecessor = predecessor->right;//访问左字数的最右结点
+                }
+
+                if(predecessor->right == nullptr)
+                {
+                    predecessor->right = root;
+                    root = root->left;
+                }
+                else
+                {
+                    if(pred !=nullptr && root->val <pred->val)
+                    {
+                        y =root;
+                        if(x == nullptr)
+                        {
+                            x = pred;
+                        }
+                    }
+                    pred = root;
+
+
+                    predecessor->right = nullptr;
+                    root = root->right;
+                }
+            }
+        }
+        swap(x->val, y->val);
+    }
+};
+```
+

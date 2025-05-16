@@ -1,0 +1,101 @@
+**1，快慢指针**
+
+题中说了，是按照升序排列的单链表，我们只需要找到他的**中间结点，让他成为树的根节点**，**中间结点前面的就是根节点左子树的所有节点，中间节点后面的就是根节点右子树的所有节点**，然后使用递归的方式再分别对左右子树进行相同的操作……
+
+这里就以链表```1→2→3→4→5```为例来画个图看一下
+![image.png](https://pic.leetcode-cn.com/2feb8feb89d47c5d482a2c12d265b97b41fed1e46c507897dc4e06dc8152f3e8-image.png)
+
+* 
+
+```
+public TreeNode sortedListToBST(ListNode head) {
+    //边界条件的判断
+    if (head == null)
+        return null;
+    if (head.next == null)
+        return new TreeNode(head.val);
+    //这里通过快慢指针找到链表的中间结点slow，pre就是中间
+    //结点slow的前一个结点
+    ListNode slow = head, fast = head, pre = null;
+    while (fast != null && fast.next != null) {
+        pre = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    //链表断开为两部分，一部分是node的左子节点，一部分是node
+    //的右子节点
+    pre.next = null;
+    //node就是当前节点
+    TreeNode node = new TreeNode(slow.val);
+    //从head节点到pre节点是node左子树的节点
+    node.left = sortedListToBST(head);
+    //从slow.next到链表的末尾是node的右子树的结点
+    node.right = sortedListToBST(slow.next);
+    return node;
+}
+```
+
+看下运行结果
+![image.png](https://pic.leetcode-cn.com/d3bf18bbfc7b86c6bab103665bbdc8d9b3abdb260a05db595f3d44ebe50cd007-image.png)
+
+实际上还可以把链表中的值全都存储到集合list中，每次把list分为两部分，和上面原理一样
+
+* 
+
+```
+    public TreeNode sortedListToBST(ListNode head) {
+        List<Integer> list = new ArrayList<>();
+        //把链表节点值全部提取到list中
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+        return sortedListToBSTHelper(list, 0, list.size() - 1);
+
+    }
+
+    TreeNode sortedListToBSTHelper(List<Integer> list, int left, int right) {
+        if (left > right)
+            return null;
+        //把list中数据分为两部分
+        int mid = left + (right - left) / 2;
+        TreeNode root = new TreeNode(list.get(mid));
+        root.left = sortedListToBSTHelper(list, left, mid - 1);
+        root.right = sortedListToBSTHelper(list, mid + 1, right);
+        return root;
+    }
+```
+
+**2，数据测试问题**
+评论中大家都说上面第二种方式应该是比第一种效率高，但运行结果远不如第一种好。因为评论区不能截图，我只能在这留言了。
+
+其实大家说的是正确的，官方给的测试数据不准确，我自己写了一个工具类，看一下测试结果
+
+* 
+
+```
+int[] arr = new int[100];
+for (int i = 0; i < arr.length; i++) {
+    arr[i] = i;
+}
+ListNode node = Util.initListNode(arr);//这是我自己写的创建链表的工具类
+long time = System.nanoTime();
+mleet109.sortedListToBST(node);
+System.out.println("第一种方式时间：" + (System.nanoTime() - time));
+time = System.nanoTime();
+mleet109.sortedListToBST1(node);
+System.out.println("第二种方式时间：" + (System.nanoTime() - time));
+```
+
+当链表长度是100的时候看下运行时间
+![image.png](https://pic.leetcode-cn.com/8f6e70fb73e297ba91d85dde9955a1d0c9ba419bcf6ba1dab58b6a0cffbb8ef3-image.png)
+
+当链表长度是9999999的时候看下运行时间```int[] arr = new int[9999999];```，我们看到这种差距还是蛮大的，所以官方给的运行时间有误
+![image.png](https://pic.leetcode-cn.com/cda3568c9f7b9a546fd902c3f90fdba03096dcdb518e122cbb46b54628a70e05-image.png)
+
+**如果觉得有用就给个赞吧，你的赞是给我最大的鼓励，也是我写作的最大动力**
+
+![image.png](https://pic.leetcode-cn.com/d56a80459005b444404d2ad6fbaabdabecd2b9ed3cb2cf432e570c315ae2fcf7-image.png)
+
+##### 查看更多答案，可扫码关注我微信公众号“**[数据结构和算法](https://img-blog.csdnimg.cn/20190515124616751.jpg)**”
+

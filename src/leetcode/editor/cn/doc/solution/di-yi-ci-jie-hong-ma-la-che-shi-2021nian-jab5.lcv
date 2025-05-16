@@ -1,0 +1,100 @@
+> Problem: [5. 最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/description/)
+
+[TOC]
+
+# 感慨
+
+三年前第一次见马拉车的时候，觉得这东西也太难了，根本无法理解，今天学习了一下，学懂以后甚至可以手搓了。
+
+# 准备工作
+
+在给定字符串前面加哨兵`$`
+然后把字符串填充进`#`
+
+* 
+
+```
+string ns="$#";
+for(auto& c:s){
+    ns+=c;
+    ns+="#";
+}
+```
+
+# 需要维护的变量
+
+* 
+
+```
+int d[ns.size()];
+memset(d,0,sizeof(d));
+d[1]=1;
+```
+
+这个是半径数组，表示每个index i的回文串的半径，注意这个半径是包括自己的,初始化d[1]=1
+
+* 
+
+```
+int l,r=0;
+```
+
+然后是盒子的左右端点，盒子表示的含义是，算法在运行的情况下，当前最长回文子串的左右端点
+
+# 算法运行
+
+* 
+
+```
+        for(int i=2;i<ns.size();i++){
+            if(i<=r) d[i]=min(d[r-i+l],r-i+1);
+            while(ns[i-d[i]]==ns[i+d[i]]) d[i]++;
+            if(i+d[i]-1>r) l=i-d[i]+1,r=i+d[i]-1;
+        }
+
+```
+
+其实就三行，
+1. 根据对称性更新当前i的半径
+2. 暴力枚举，看能不能使当前的i的半径更远
+3. 如果比盒子的右端点还远，更新盒子
+
+一旦最后知道了d数组，那想干啥干啥简直是。
+
+# Code
+
+* []
+
+```C++
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string ns="$#";
+        for(auto& c:s){
+            ns+=c;
+            ns+="#";
+        }
+        int d[ns.size()];
+        memset(d,0,sizeof(d));
+        d[1]=1;
+        int maxLen=0;
+        int start=0;
+        int l,r=0;
+        for(int i=2;i<ns.size();i++){
+            if(i<=r) d[i]=min(d[r-i+l],r-i+1);
+            while(ns[i-d[i]]==ns[i+d[i]]) d[i]++;
+            if(i+d[i]-1>r) l=i-d[i]+1,r=i+d[i]-1;
+            if(d[i]*2-1>maxLen){
+                maxLen=d[i]*2-1;
+                start=i-d[i]+1;
+            }
+        }
+        string ans;
+        for(int i=start;i<start+maxLen;i++){
+            if(ns[i]!='#') ans+=ns[i];
+        }
+        return ans;
+    }
+};
+```
+

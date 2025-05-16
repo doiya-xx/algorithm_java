@@ -1,0 +1,29 @@
+[详细刷题视频合集](https://xiaochen1024.com/series/6196129fc1553b002e57bef5/6196208ec1553b002e57bef6)      
+[刷题笔记](https://xiaochen1024.com/courseware/60b4f11ab1aa91002eb53b18)
+
+* 
+
+```
+var recoverTree = function(root) {
+    if(!root) return null
+    let result = []
+
+    let dfs = node=>{    //中序遍历取出所有节点val
+        node.left&&dfs(node.left)
+        result.push(node.val)
+        node.right&&dfs(node.right)
+    }
+    dfs(root)
+    result.sort((a,b)=>a-b)
+    
+    let setVals = node=>{   //给所有节点重新赋值
+        node.left&&setVals(node.left)
+        node.val = result.shift()
+        node.right&&setVals(node.right)
+    }
+    setVals(root)
+    return root
+};
+
+```
+

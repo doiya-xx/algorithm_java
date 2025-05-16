@@ -37,6 +37,8 @@
 
 package leetcode.editor.cn;
 
+import commons.TreeNode;
+
 public class RangeSumOfBst {
     
     public static void main(String[] args) {
