@@ -44,6 +44,12 @@ public class LC0048_RotateImage {
 
     // leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
+        /**
+         * 原地旋转，即交换对应位置
+         *
+         * @param matrix
+         */
         public void rotate(int[][] matrix) {
             int n = matrix.length;
             for (int i = 0; i < n / 2; i++) {
@@ -59,5 +65,52 @@ public class LC0048_RotateImage {
     }
     // leetcode submit region end(Prohibit modification and deletion)
 
+    class Solution2 {
+
+        /*
+        使用辅助矩阵
+         */
+        public void rotate(int[][] matrix) {
+            int n = matrix.length;
+            // 深拷贝 matrix -> tmp
+            int[][] tmp = new int[n][];
+            for (int i = 0; i < n; i++)
+                tmp[i] = matrix[i].clone();
+            // 根据元素旋转公式，遍历修改原矩阵 matrix 的各元素
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    matrix[j][n - 1 - i] = tmp[i][j];
+                }
+            }
+        }
+    }
+
+    class Solution3 {
+
+        /**
+         * 翻转矩阵
+         *
+         * @param matrix
+         */
+        public void rotate(int[][] matrix) {
+            int n = matrix.length;
+            // 水平翻转
+            for (int i = 0; i < n / 2; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    int temp = matrix[i][j];
+                    matrix[i][j] = matrix[n - i - 1][j];
+                    matrix[n - i - 1][j] = temp;
+                }
+            }
+            // 主对角线翻转
+            for (int i = 0; i < n; ++i) {
+                for (int j = 0; j < i; ++j) {
+                    int temp = matrix[i][j];
+                    matrix[i][j] = matrix[j][i];
+                    matrix[j][i] = temp;
+                }
+            }
+        }
+    }
 
 }

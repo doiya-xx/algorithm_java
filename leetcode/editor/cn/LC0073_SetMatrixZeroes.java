@@ -55,8 +55,8 @@ public class LC0073_SetMatrixZeroes {
 
     @Test
     public void testSolution() {
-        int[][] matrix = {{0,1,2,0},{3,4,5,2},{1,3,1,5}};
-        int[][] target = {{0,0,0,0},{0,4,5,0},{0,3,1,0}};
+        int[][] matrix = {{0, 1, 2, 0}, {3, 4, 5, 2}, {1, 3, 1, 5}};
+        int[][] target = {{0, 0, 0, 0}, {0, 4, 5, 0}, {0, 3, 1, 0}};
         Solution solution = new Solution();
         solution.setZeroes(matrix);
         Assertions.assertArrayEquals(matrix, target);
@@ -82,6 +82,4 @@ public class LC0073_SetMatrixZeroes {
         }
     }
     // leetcode submit region end(Prohibit modification and deletion)
-
-
 }
